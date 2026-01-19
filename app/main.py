@@ -1,14 +1,16 @@
 from fastapi import FastAPI
 from app.core.config import APP_NAME
 from app.core.config_logging import logger
-from app.core.exceptions import global_exception_handler
+from app.exceptions import http_exception_handler, general_exception_handler
+from fastapi import HTTPException
+from fastapi.exceptions import RequestValidationError
 from app.routes import userroutes  # import auth routes
 
 
-
-
 app = FastAPI(title = APP_NAME)
-app.add_exception_handler(Exception, global_exception_handler)
+app.add_exception_handler(HTTPException,http_exception_handler)          
+app.add_exception_handler(RequestValidationError,http_exception_handler)  
+app.add_exception_handler(Exception, general_exception_handler) 
 
 app.include_router(userroutes.router)
 @app.on_event("startup")
@@ -21,10 +23,5 @@ def shutdown_event():
 
 @app.get("/health")
 def health_check():
-    logger.info("Health endpoint called")
-    return {"status":"ok"}
-
-@app.get("/wealt")
-def wealth_check():
     logger.info("Health endpoint called")
     return {"status":"ok"}
