@@ -35,4 +35,11 @@ class TaskResponse(TaskBase):
     created_at:datetime
     
     class Config:
-        from_attributes = True
+         orm_mode= True
+
+class TaskListResponse(BaseModel):
+    tasks: list[TaskResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

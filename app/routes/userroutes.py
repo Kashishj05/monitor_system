@@ -21,7 +21,7 @@ def login_route(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/",response_model=list[UserResponse])
 def list_users(db:Session = Depends(get_db),
-               current_user:int= Depends(get_current_user)):
+        current_user:int= Depends(get_current_user)):
     return get_all_user(db)
 
 @router.get("/user_id/{user_id}",response_model=UserResponse)
